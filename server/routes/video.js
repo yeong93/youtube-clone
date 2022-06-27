@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const { Video } = require("../models/User");
+const { Video } = require("../models/Video");
 
 const { auth } = require("../middleware/auth");
 const multer = require("multer");
@@ -40,6 +40,7 @@ router.post('/uploadfiles', (req, res) => {
     })
 })
 
+
 router.post('/thumbnail', (req, res) => {
     
     // 썸네일 생성하고 비디오 러닝타임도 가져오기
@@ -77,6 +78,20 @@ router.post('/thumbnail', (req, res) => {
             filename:'thumbnail-%b.png'
         });
 })
+
+
+router.post("/uploadVideo", (req, res) => {
+
+    const video = new Video(req.body)
+
+    video.save((err, video) => {
+        if(err) return res.status(400).json({ success: false, err })
+        return res.status(200).json({
+            success: true 
+        })
+    })
+
+});
 
 
 module.exports = router;

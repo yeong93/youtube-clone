@@ -19,7 +19,7 @@ const CategoryOptions = [
     { value: 3, label: "Pets & Animals" },
 ]
 
-function VideoUploadPage() {
+function VideoUploadPage(props) {
   const user = useSelector(state => state.user);
   const [VideoTitle, setVideoTitle] = useState("");
   const [Description, setDescription] = useState("");
@@ -90,18 +90,29 @@ function VideoUploadPage() {
     e.preventDefault();
 
     const variables = {
-        writer : user.userData._id,
+        writer: user.userData._id,
         title: VideoTitle,
         description: Description,
         privacy: Private,
         filePath: FilePth,
-        category: Category,
+        catogory: Category,
         duration: Duration,
         thumbnail: ThumbnailPath,
     }
 
-    Axios.post('/api/video/uploadvideo', variables)
-
+    Axios.post("/api/video/uploadVideo", variables).then((res) => {
+        if (res.data.success) {
+            // console.log(res.data);
+            message.success("Uploaded successfully.");
+            setTimeout(() => {
+            props.history.push("/");
+            }, 3000);
+        } else {
+            console.log(res.data);
+            alert("Failed to upload to server");
+        }
+        
+    });
   }
 
   return (
