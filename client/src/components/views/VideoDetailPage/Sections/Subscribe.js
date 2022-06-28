@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 
 function Subscribe(props) {
 
-  const [SubscribeNumber, setSubscribeNumber] = useState('');
-  const [Subscribed, setSubscribed] = useState('');
+  const [SubscribeNumber, setSubscribeNumber] = useState(0);
+  const [Subscribed, setSubscribed] = useState(false);
+
   useEffect(()=>{
     let variable = {userTo: props.userTo}
 
@@ -33,14 +34,14 @@ function Subscribe(props) {
   },[])
 
   const onclick = () => {
-    
+
   }
 
 
   return (
     <div>
         <button
-          style={{backgroundColor: `${ Subscribed ? '#AAAA' : '#CC0000'}`, borderRadius: '4px',
+          style={{backgroundColor: `${ Subscribed ? '#CC0000' : '#AAAAAA'}`, borderRadius: '4px',
                  color: 'white', padding: '10px 16px',        
                  fontWeight: '500', fontSize: '1rem', textTransform: 'uppsercase'
           }}
