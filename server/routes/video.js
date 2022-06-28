@@ -106,4 +106,14 @@ router.get("/getVideos", (req, res) => {
 
 });
 
+router.post("/getVideoDetail", (req, res) => {
+    Video.findOne({ _id: req.body.videoId })
+      // populate = bring every info from writer
+      .populate("writer")
+      .exec((err, videoDetail) => {
+        if (err) return res.status(400).json({ success: false, err });
+        res.status(200).json({ success: true, videoDetail });
+      });
+  });
+
 module.exports = router;
