@@ -8,25 +8,62 @@ import Comment from './Sections/Comment';
 function VideoDetailPage(props) {
 
     const videoId = props.match.params.videoId;
+    // console.log('videoDetailPage :: ',videoId);
+    
+    const [VideoDetail, setVideoDetail] = useState([]);
+    const [Comments, setComments] = useState([]);
     
     const variable = {
         videoId: videoId,
     }
 
-    const [VideoDetail, setVideoDetail] = useState([]);
     
+    // useEffect(() => {
+    // console.log('variable' , variable);
+    // Axios.post('/api/video/getVideoDetail', variable)
+    //     .then(response => {
+    //         if(response.data.success){
+    //             console.log(response.data.videoDetail);
+    //             setVideoDetail(response.data.videoDetail)
+    //         } else {
+    //             alert('비디오 정보를 가져오기를 실패했습니다.')
+    //         }
+    //     })
+
+    
+    // Axios.post('/api/comment/getComments', variable)
+    //   .then(response => {
+    //     if(response.data.success){
+    //       setComments(response.data.comments);
+    //       console.log('reply info', response.data.comments);
+    //     }else{
+    //       alert('코멘트 정보를 가져오는것을 실패하였습니다.');
+    //     }
+    //   })
+    // },[])
     useEffect(() => {
-    Axios.post('/api/video/getVideoDetail', variable)
-        .then(response => {
-            if(response.data.success){
-                console.log(response.data.videoDetail);
-                setVideoDetail(response.data.videoDetail)
-            } else {
-                alert('비디오 정보를 가져오기를 실패했습니다.')
-            }
-        })
-    },[])
+      Axios.post("/api/video/getVideoDetail", variable).then((res) => {
+        if (res.data.success) {
+          setVideoDetail(res.data.videoDetail);
+        } else {
+          alert("Failed to get video Infos");
+        }
+      });
+
+      Axios.post("/api/comment/getComments", variable).then((response) => {
+        if (response.data.success) {
+          console.log("response.data.comments", response.data.comments);
+          setComments(response.data.comments);
+        } else {
+          alert("Failed to get video Info");
+        }
+      });
+    }, []);
   
+    const refreshFunction = (newComment) => {
+      setComments(Comments.concat(newComment))
+    }
+
     if (VideoDetail.writer) {
 
         // 본인의 글인 경우 subscribe button unvisible
@@ -56,7 +93,7 @@ function VideoDetailPage(props) {
                   {/* <div></div> */}
                 </List.Item>
                 {/* comments */}
-                <Comment postId={videoId} />
+                <Comment refreshFunction={refreshFunction} commentLists={Comments}  postId={videoId} />
 
               </div>
             </Col>

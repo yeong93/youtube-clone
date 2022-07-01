@@ -5,9 +5,9 @@ function Subscribe(props) {
 
   const [SubscribeNumber, setSubscribeNumber] = useState(0);
   const [Subscribed, setSubscribed] = useState(false);
+  let variable = {userTo: props.userTo}
 
   useEffect(()=>{
-    let variable = {userTo: props.userTo}
 
     // 구독자 수 정보 가져오기
     Axios.post('/api/subscribe/subscribeNumber', variable)
